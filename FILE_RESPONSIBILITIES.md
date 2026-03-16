@@ -338,16 +338,3 @@ Login -> Dashboard -> Bebês -> Resumo -> Responsáveis -> Sessão -> Captura ->
 ```
 
 ---
-
-## Arquivos mais críticos para manutenção
-
-Se for preciso entender rapidamente o sistema, comece por:
-
-1. `core/AppGraph.kt`
-2. `data/repository/OfflineFirstBiometriaRepository.kt`
-3. `core/database/AppDatabase.kt`
-4. `di/AppModules.kt`
-5. `features/babies/BabiesScreens.kt`
-6. `features/babies/BabiesViewModels.kt`
-7. `features/biometric/BiometricViewModel.kt`
-
