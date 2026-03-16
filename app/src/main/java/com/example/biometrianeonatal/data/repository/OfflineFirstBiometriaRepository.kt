@@ -64,6 +64,9 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 
+/**
+ * Repositorio principal offline-first que integra banco local, seguranca, sensores e sincronizacao.
+ */
 @OptIn(ExperimentalCoroutinesApi::class)
 class OfflineFirstBiometriaRepository(
     private val database: AppDatabase,
@@ -74,8 +77,11 @@ class OfflineFirstBiometriaRepository(
     private val syncCoordinator: SyncCoordinator,
     private val sensorAdapter: SensorCapturePort,
 ) : AuthRepository, DashboardRepository, HistoryRepository, BabyRepository, BiometricRepository, SyncRepository {
+    // Mantém previews ainda não aceitos para que a revisão aconteça antes da gravação definitiva no banco.
     private val pendingCaptures = MutableStateFlow<Map<String, CapturePreview>>(emptyMap())
+    // Espelha localmente o usuário logado para tornar a sessão observável sem consultar Preferences a todo momento.
     private val currentSessionUserId = MutableStateFlow(sessionStore.getCurrentUserId())
+    // Guarda a resposta remota até que o caso de uso confirme a persistência da sessão do usuário autenticado.
     private var pendingRemoteSession: AuthenticatedRemoteSession? = null
 
     override fun observeHospitals(): Flow<List<Hospital>> {
@@ -100,12 +106,14 @@ class OfflineFirstBiometriaRepository(
             if (userId.isNullOrBlank()) {
                 flowOf(null)
             } else {
+                // Quando existe um id salvo, a fonte de verdade passa a ser o registro local do usuário no banco.
                 observeUser(userId)
             }
         }
     }
 
     override suspend fun login(email: String, password: String, hospitalId: String): AuthUser? {
+        // A autenticação primeiro consulta a fonte remota e só depois materializa o usuário local para uso offline.
         val remoteSession = authRemoteDataSource.login(email, password, hospitalId)
             ?: return null.also { pendingRemoteSession = null }
         pendingRemoteSession = remoteSession
@@ -114,6 +122,7 @@ class OfflineFirstBiometriaRepository(
     }
 
     override suspend fun persistSession(userId: String) {
+        // Os tokens só são gravados se corresponderem ao usuário recém-autenticado pendente nesta instância.
         pendingRemoteSession?.takeIf { it.user.id == userId }?.let { remoteSession ->
             sessionStore.saveAuthSession(
                 accessToken = remoteSession.accessToken,
@@ -141,6 +150,7 @@ class OfflineFirstBiometriaRepository(
             database.sessionDao().observeCollectionsTodayCount(),
             database.syncQueueDao().observePendingCount(),
         ) { babiesToday, collectionsToday, pendingSync ->
+            // O dashboard trabalha com um resumo agregado para evitar múltiplas consultas na camada de apresentação.
             DashboardSummary(
                 babiesToday = babiesToday,
                 collectionsToday = collectionsToday,

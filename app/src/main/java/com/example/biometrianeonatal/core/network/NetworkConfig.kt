@@ -11,6 +11,9 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+/**
+ * Fabrica de clientes HTTP e Retrofit com timeouts e politica TLS compativeis com o ambiente.
+ */
 object NetworkConfig {
     const val DEFAULT_BASE_URL = "https://example.invalid/"
 

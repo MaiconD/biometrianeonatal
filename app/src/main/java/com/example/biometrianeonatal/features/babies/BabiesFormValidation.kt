@@ -8,6 +8,9 @@ import java.time.format.DateTimeParseException
 import java.time.format.ResolverStyle
 import java.util.Locale
 
+/**
+ * Lista restrita de UFs aceitas no formulário de responsáveis.
+ */
 internal val BrazilianStateOptions = listOf(
     "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA",
     "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN",
@@ -21,8 +24,10 @@ private val brazilianDateFormatter: DateTimeFormatter = DateTimeFormatter
 private val isoDateFormatter: DateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE
 private val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
+/** Mantém apenas dígitos e limita o peso ao tamanho esperado na interface. */
 internal fun normalizeWeightInput(value: String): String = value.filter(Char::isDigit).take(5)
 
+/** Mantém apenas dígitos e limita a altura ao tamanho esperado na interface. */
 internal fun normalizeHeightInput(value: String): String = value.filter(Char::isDigit).take(3)
 
 internal fun normalizeDocumentInput(value: String): String = formatCpf(value)
@@ -39,6 +44,7 @@ internal fun formatGuardianDraftForUi(draft: GuardianDraft): GuardianDraft {
     )
 }
 
+/** Converte datas salvas em ISO para o formato amigável exibido no formulário. */
 internal fun toDisplayBirthDate(rawValue: String): String {
     val trimmed = rawValue.trim()
     if (trimmed.isBlank()) return ""
@@ -47,6 +53,7 @@ internal fun toDisplayBirthDate(rawValue: String): String {
     return trimmed
 }
 
+/** Converte a data digitada na UI para o formato estável persistido no banco. */
 internal fun toStorageBirthDate(rawValue: String): String {
     val trimmed = rawValue.trim()
     if (trimmed.isBlank()) return ""
@@ -55,6 +62,7 @@ internal fun toStorageBirthDate(rawValue: String): String {
         ?: trimmed
 }
 
+/** Rejeita datas vazias, inválidas ou futuras para proteger a consistência clínica. */
 internal fun isValidBirthDate(rawValue: String): Boolean {
     val trimmed = rawValue.trim()
     if (trimmed.isBlank()) return false
@@ -62,6 +70,7 @@ internal fun isValidBirthDate(rawValue: String): Boolean {
     return !date.isAfter(LocalDate.now())
 }
 
+/** Padroniza a hora em HH:mm para manter a mesma exibição em criação e edição. */
 internal fun toDisplayBirthTime(rawValue: String): String {
     val trimmed = rawValue.trim()
     if (trimmed.isBlank()) return ""
@@ -89,6 +98,7 @@ internal fun formatCpf(rawValue: String): String {
     }
 }
 
+/** Implementa a validação matemática do CPF para evitar documentos obviamente inválidos. */
 internal fun isValidCpf(rawValue: String): Boolean {
     val digits = rawValue.filter(Char::isDigit)
     if (digits.length != 11) return false
@@ -100,6 +110,7 @@ internal fun isValidCpf(rawValue: String): Boolean {
     return numbers[9] == firstDigit && numbers[10] == secondDigit
 }
 
+/** Formata números brasileiros com 10 ou 11 dígitos para leitura humana no formulário. */
 internal fun formatPhoneBr(rawValue: String): String {
     val digits = rawValue.filter(Char::isDigit).take(11)
     return when {

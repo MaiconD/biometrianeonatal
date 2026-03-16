@@ -9,6 +9,9 @@ import com.example.biometrianeonatal.di.AppGraphDependencies
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+/**
+ * Activity Android que hospeda a arvore Compose e inicia a navegacao principal.
+ */
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @Inject
@@ -18,6 +21,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            // A Activity apenas hospeda o grafo Compose; regras de navegação e sessão ficam fora dela.
             BiometriaNeonatalApp(appGraphDependencies)
         }
     }

@@ -7,6 +7,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlin.random.Random
 
+/**
+ * Tipo `SensorCaptureResult` que organiza dados ou comportamento desta camada.
+ */
 class SensorCaptureResult(
     val sessionId: String,
     val fingerCode: String,
@@ -17,6 +20,9 @@ class SensorCaptureResult(
     val templateBase64: String,
 )
 
+/**
+ * Tipo `FakeSensorAdapter` que organiza dados ou comportamento desta camada.
+ */
 class FakeSensorAdapter : SensorCapturePort {
     private val runtimeSnapshot = MutableStateFlow(
         SensorRuntimeSnapshot(

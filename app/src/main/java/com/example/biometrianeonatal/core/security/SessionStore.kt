@@ -5,6 +5,9 @@ import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 
+/**
+ * Contrato para persistencia segura da sessao autenticada no dispositivo.
+ */
 interface SessionStore {
     fun getCurrentUserId(): String?
     fun saveCurrentUserId(userId: String)
@@ -18,6 +21,9 @@ interface SessionStore {
     fun clear()
 }
 
+/**
+ * Implementacao da sessao com EncryptedSharedPreferences para proteger tokens e usuario atual.
+ */
 class SecureSessionStore(
     context: Context,
 ) : SessionStore {

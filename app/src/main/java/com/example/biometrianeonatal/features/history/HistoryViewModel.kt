@@ -10,6 +10,9 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 
+/**
+ * ViewModel enxuto que expoe a linha do tempo de sessoes biometricas armazenadas.
+ */
 @HiltViewModel
 class HistoryViewModel @Inject constructor(
     observeSessionHistoryUseCase: ObserveSessionHistoryUseCase,

@@ -10,10 +10,14 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
+/**
+ * Exercita os cenários críticos de refresh e limpeza da sessão autenticada.
+ */
 class AuthSessionManagerTest {
 
     @Test
     fun getValidAccessToken_refreshes_when_expired() {
+        // Simula uma sessão expirada para verificar se o manager troca os tokens antes de devolver acesso.
         val sessionStore = InMemorySessionStore().apply {
             saveCurrentUserId("user-01")
             saveAuthSession(
@@ -41,6 +45,7 @@ class AuthSessionManagerTest {
 
     @Test
     fun getValidAccessToken_clears_session_when_refresh_fails() {
+        // Quando o refresh falha, a sessão deve ser invalidada para evitar uso de credenciais inconsistentes.
         val sessionStore = InMemorySessionStore().apply {
             saveCurrentUserId("user-01")
             saveAuthSession(
@@ -61,6 +66,7 @@ class AuthSessionManagerTest {
     }
 }
 
+/** Implementação em memória para isolar o comportamento do gerenciador sem SharedPreferences reais. */
 private class InMemorySessionStore : SessionStore {
     private var currentUserId: String? = null
     private var accessToken: String? = null
@@ -105,6 +111,7 @@ private class InMemorySessionStore : SessionStore {
     }
 }
 
+/** Data source fake que controla o retorno do refresh e contabiliza as chamadas do teste. */
 private class FakeAuthRemoteDataSource(
     private val refreshedTokens: AuthTokensDto?,
 ) : AuthRemoteDataSource {

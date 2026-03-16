@@ -13,6 +13,9 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 
+/**
+ * Verifica que as migrations preservam dados legados e introduzem as colunas modernas esperadas.
+ */
 @RunWith(AndroidJUnit4::class)
 class AppDatabaseMigrationTest {
 
@@ -21,12 +24,14 @@ class AppDatabaseMigrationTest {
 
     @After
     fun tearDown() {
+        // Remove os bancos de teste para que cada cenário execute em um estado conhecido e isolado.
         context.deleteDatabase(DB_V1_TO_V4)
         context.deleteDatabase(DB_V3_TO_V4)
     }
 
     @Test
     fun migrateFromV1ToV4_preservesLegacyRowsAndAddsModernColumns() {
+        // Monta um schema antigo criptografado para simular exatamente o ponto de partida da migration.
         createEncryptedLegacyDatabase(
             name = DB_V1_TO_V4,
             version = 1,
@@ -64,6 +69,7 @@ class AppDatabaseMigrationTest {
 
     @Test
     fun migrateFromV3ToV4_replacesConsentColumnsWithSignatureColumn() {
+        // Exercita a troca de colunas de consentimento pelo novo campo de assinatura em Base64.
         createEncryptedLegacyDatabase(
             name = DB_V3_TO_V4,
             version = 3,
@@ -93,6 +99,7 @@ class AppDatabaseMigrationTest {
         version: Int,
         onCreateSchema: (SupportSQLiteDatabase) -> Unit,
     ) {
+        // Cria manualmente um banco antigo para que o Room execute as migrations reais do projeto.
         context.deleteDatabase(name)
         val helper = SupportFactory(passphrase()).create(
             SupportSQLiteOpenHelper.Configuration.builder(context)

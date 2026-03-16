@@ -2,12 +2,18 @@ package com.example.biometrianeonatal.core.sensors
 
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Enumeracao `SensorCaptureSource` usada para restringir valores validos do dominio.
+ */
 enum class SensorCaptureSource {
     DEMO_LOCAL,
     TABLET_CAMERA,
     USB_SENSOR,
 }
 
+/**
+ * Tipo `SensorCaptureSourceOption` que organiza dados ou comportamento desta camada.
+ */
 data class SensorCaptureSourceOption(
     val source: SensorCaptureSource,
     val label: String,
@@ -15,6 +21,9 @@ data class SensorCaptureSourceOption(
     val detailMessage: String? = null,
 )
 
+/**
+ * Tipo `SensorUsbDeviceOption` que organiza dados ou comportamento desta camada.
+ */
 data class SensorUsbDeviceOption(
     val deviceId: Int,
     val label: String,
@@ -22,6 +31,9 @@ data class SensorUsbDeviceOption(
     val hasPermission: Boolean,
 )
 
+/**
+ * Enumeracao `SensorConnectionState` usada para restringir valores validos do dominio.
+ */
 enum class SensorConnectionState {
     DISCONNECTED,
     WAITING_PERMISSION,
@@ -31,6 +43,9 @@ enum class SensorConnectionState {
     ERROR,
 }
 
+/**
+ * Tipo `SensorDeviceMetadata` que organiza dados ou comportamento desta camada.
+ */
 data class SensorDeviceMetadata(
     val name: String,
     val version: String,
@@ -38,6 +53,9 @@ data class SensorDeviceMetadata(
     val manufacturer: String,
 )
 
+/**
+ * Tipo `SensorCapabilities` que organiza dados ou comportamento desta camada.
+ */
 data class SensorCapabilities(
     val transport: String,
     val supportsLivePreview: Boolean,
@@ -46,6 +64,9 @@ data class SensorCapabilities(
     val supportsNativeProcessing: Boolean,
 )
 
+/**
+ * Tipo `SensorRuntimeSnapshot` que organiza dados ou comportamento desta camada.
+ */
 data class SensorRuntimeSnapshot(
     val connectionState: SensorConnectionState,
     val capabilities: SensorCapabilities,
@@ -58,6 +79,9 @@ data class SensorRuntimeSnapshot(
     val lastErrorMessage: String? = null,
 )
 
+/**
+ * Interface `SensorCapturePort` que define um contrato reutilizado por outras camadas.
+ */
 interface SensorCapturePort {
     fun observeRuntimeSnapshot(): Flow<SensorRuntimeSnapshot>
 

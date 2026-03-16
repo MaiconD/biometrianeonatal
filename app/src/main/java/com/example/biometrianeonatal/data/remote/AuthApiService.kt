@@ -3,6 +3,9 @@ package com.example.biometrianeonatal.data.remote
 import retrofit2.http.Body
 import retrofit2.http.POST
 
+/**
+ * Interface `AuthApiService` que define um contrato reutilizado por outras camadas.
+ */
 interface AuthApiService {
     @POST("api/v1/auth/login")
     suspend fun login(@Body request: LoginRequestDto): AuthLoginResponseDto

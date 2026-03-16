@@ -15,6 +15,9 @@ import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
+/**
+ * Tipo `SyncWorkScheduler` que organiza dados ou comportamento desta camada.
+ */
 class SyncWorkScheduler(
     context: Context,
 ) {

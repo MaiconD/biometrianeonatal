@@ -18,6 +18,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
+/**
+ * Estado da sincronizacao com progresso, ultima execucao e sinalizacao de erro ou fallback.
+ */
 data class SyncUiState(
     val syncingNow: Boolean = false,
     val lastSyncedCount: Int = 0,
@@ -27,6 +30,9 @@ data class SyncUiState(
     val hasError: Boolean = false,
 )
 
+/**
+ * ViewModel da sincronizacao manual que observa o WorkManager e dispara novas execucoes.
+ */
 @HiltViewModel
 class SyncViewModel @Inject constructor(
     observePendingSyncItemsUseCase: ObservePendingSyncItemsUseCase,
@@ -36,6 +42,7 @@ class SyncViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(SyncUiState())
     val uiState: StateFlow<SyncUiState> = _uiState.asStateFlow()
+    // Callback temporário usado para avisar a tela quando a execução enfileirada terminar com sucesso.
     private var pendingCompletion: (() -> Unit)? = null
 
     val pendingItems: StateFlow<List<PendingSyncItem>> = observePendingSyncItemsUseCase().stateIn(
@@ -49,6 +56,7 @@ class SyncViewModel @Inject constructor(
             observeImmediateSyncWorkUseCase().collect { workInfo ->
                 if (workInfo == null) return@collect
 
+                // O estado do WorkManager é traduzido para uma representação mais amigável à UI.
                 val isRunning = workInfo.state == WorkInfo.State.ENQUEUED || workInfo.state == WorkInfo.State.RUNNING
                 val statusName = workInfo.outputData.getString(SyncWorker.KEY_STATUS)
                 val status = statusName?.let {
@@ -68,6 +76,7 @@ class SyncViewModel @Inject constructor(
                     pendingCompletion?.invoke()
                     pendingCompletion = null
                 }
+                // Em falha ou cancelamento o callback é descartado para não sinalizar conclusão indevida depois.
                 if (workInfo.state == WorkInfo.State.FAILED || workInfo.state == WorkInfo.State.CANCELLED) {
                     pendingCompletion = null
                 }
@@ -76,6 +85,7 @@ class SyncViewModel @Inject constructor(
     }
 
     fun syncNow(onCompleted: (() -> Unit)? = null) {
+        // A tela pode fornecer uma ação pós-sync, mas a confirmação só ocorre após o Worker reportar sucesso.
         pendingCompletion = onCompleted
         _uiState.value = _uiState.value.copy(syncingNow = true, hasError = false)
         scheduleImmediateSyncUseCase()

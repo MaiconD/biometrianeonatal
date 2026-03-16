@@ -1,5 +1,8 @@
 package com.example.biometrianeonatal.core.config
 
+/**
+ * Configuracao de runtime derivada do build que controla ambiente, backend e modo offline.
+ */
 data class AppRuntimeConfig(
     val environmentName: String,
     val remoteBaseUrl: String,

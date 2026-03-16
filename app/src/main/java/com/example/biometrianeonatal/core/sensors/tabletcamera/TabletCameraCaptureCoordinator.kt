@@ -22,6 +22,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
 
+/**
+ * Tipo `TabletCameraRuntimeState` que organiza dados ou comportamento desta camada.
+ */
 data class TabletCameraRuntimeState(
     val hasPermission: Boolean = false,
     val isPreviewBound: Boolean = false,
@@ -29,12 +32,18 @@ data class TabletCameraRuntimeState(
     val lastErrorMessage: String? = null,
 )
 
+/**
+ * Tipo `TabletCameraCapturePayload` que organiza dados ou comportamento desta camada.
+ */
 data class TabletCameraCapturePayload(
     val imageBytes: ByteArray,
     val width: Int,
     val height: Int,
 )
 
+/**
+ * Tipo `TabletCameraCaptureCoordinator` que organiza dados ou comportamento desta camada.
+ */
 @Singleton
 class TabletCameraCaptureCoordinator @Inject constructor(
     @param:ApplicationContext private val context: Context,

@@ -6,6 +6,9 @@ import com.example.biometrianeonatal.data.remote.RemoteSyncTransport
 import com.example.biometrianeonatal.data.remote.SyncRemoteDataSource
 import kotlinx.coroutines.delay
 
+/**
+ * Tipo `FakeSyncAdapter` que organiza dados ou comportamento desta camada.
+ */
 class FakeSyncAdapter : SyncRemoteDataSource {
     override suspend fun pushBatch(payload: SyncBatchPayloadDto): RemoteSyncResult {
         delay(900)

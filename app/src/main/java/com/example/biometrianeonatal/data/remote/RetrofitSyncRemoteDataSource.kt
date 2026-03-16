@@ -1,5 +1,8 @@
 package com.example.biometrianeonatal.data.remote
 
+/**
+ * Tipo `RetrofitSyncRemoteDataSource` que organiza dados ou comportamento desta camada.
+ */
 class RetrofitSyncRemoteDataSource(
     private val apiService: SyncApiService,
 ) : SyncRemoteDataSource {

@@ -29,6 +29,9 @@ private data class SignatureStroke(
     val points: MutableList<Offset> = mutableListOf(),
 )
 
+/**
+ * Funcao de topo `SignaturePad` usada como parte do fluxo principal do arquivo.
+ */
 @Composable
 fun SignaturePad(
     modifier: Modifier = Modifier,

@@ -51,6 +51,9 @@ import com.example.biometrianeonatal.core.security.AccessPolicy
 import com.example.biometrianeonatal.core.designsystem.SectionTitle
 import com.example.biometrianeonatal.core.designsystem.StatCard
 
+/**
+ * Tela inicial apos o login com indicadores operacionais e atalhos por perfil.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
@@ -60,10 +63,12 @@ fun DashboardScreen(
     onOpenSync: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    // O dashboard combina dados operacionais do dispositivo com o papel do usuário autenticado.
     val viewModel: DashboardViewModel = hiltViewModel()
     val user by viewModel.user.collectAsStateWithLifecycle()
     val summary by viewModel.summary.collectAsStateWithLifecycle()
     val role = user?.role
+    // As permissões definem quais atalhos ficam visíveis sem duplicar regra na camada visual.
     val canCreateBaby = AccessPolicy.canCreateOrEditBaby(role)
     val canViewHistory = AccessPolicy.canViewHistory(role)
     val canSync = AccessPolicy.canSync(role)
@@ -88,6 +93,7 @@ fun DashboardScreen(
                 containerColor = MaterialTheme.colorScheme.surface,
                 tonalElevation = 0.dp,
             ) {
+                // A barra inferior é montada dinamicamente para refletir o perfil do usuário na sessão atual.
                 NavigationBarItem(selected = true, onClick = {}, icon = { Icon(Icons.Outlined.Home, null) }, label = { Text("Home") })
                 NavigationBarItem(selected = false, onClick = onOpenBabies, icon = { Icon(Icons.Outlined.ChildCare, null) }, label = { Text("Bebês") })
                 if (canViewHistory) {

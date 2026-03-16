@@ -34,6 +34,9 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
 
+/**
+ * Funcao de topo `CameraXBiometricPreview` usada como parte do fluxo principal do arquivo.
+ */
 @Composable
 fun CameraXBiometricPreview(
     modifier: Modifier = Modifier,
@@ -104,6 +107,9 @@ fun CameraXBiometricPreview(
     }
 }
 
+/**
+ * Interface `CameraXPreviewEntryPoint` que define um contrato reutilizado por outras camadas.
+ */
 @EntryPoint
 @InstallIn(SingletonComponent::class)
 interface CameraXPreviewEntryPoint {

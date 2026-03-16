@@ -21,6 +21,9 @@ import com.example.biometrianeonatal.domain.model.SyncExecutionResult
 import com.example.biometrianeonatal.domain.model.SessionContext
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Contrato de autenticacao e sessao consumido pelas features e casos de uso.
+ */
 interface AuthRepository {
     fun observeHospitals(): Flow<List<Hospital>>
     fun observeUser(userId: String): Flow<AuthUser?>
@@ -30,16 +33,25 @@ interface AuthRepository {
     suspend fun clearSession()
 }
 
+/**
+ * Contrato `DashboardRepository` da camada de dados do aplicativo.
+ */
 interface DashboardRepository {
     fun observeSummary(): Flow<DashboardSummary>
 }
 
+/**
+ * Contrato de consulta do historico local de sessoes e capturas aceitas.
+ */
 interface HistoryRepository {
     fun observeSessions(): Flow<List<SessionListItem>>
     fun observeSessionDetail(sessionId: String): Flow<SessionHistoryDetail?>
     suspend fun openSessionCapture(fingerprintId: String): OpenedArtifact?
 }
 
+/**
+ * Contrato de cadastro e manutencao de recem-nascidos e responsaveis.
+ */
 interface BabyRepository {
     fun observeBabies(): Flow<List<BabyListItem>>
     fun observeBaby(babyId: String): Flow<BabyDraft?>
@@ -53,6 +65,9 @@ interface BabyRepository {
     suspend fun deleteBaby(babyId: String)
 }
 
+/**
+ * Contrato do fluxo de coleta biometrica e revisao de capturas pendentes.
+ */
 interface BiometricRepository {
     fun observeSessionContext(babyId: String, operatorId: String): Flow<SessionContext?>
     fun observeSensorRuntime(): Flow<SensorRuntimeInfo>
@@ -68,6 +83,9 @@ interface BiometricRepository {
     suspend fun discardPendingCapture(sessionId: String)
 }
 
+/**
+ * Contrato de observacao e execucao da sincronizacao de registros pendentes.
+ */
 interface SyncRepository {
     fun observePendingSyncItems(): Flow<List<PendingSyncItem>>
     suspend fun syncNow(): SyncExecutionResult

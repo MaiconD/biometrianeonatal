@@ -32,6 +32,9 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.biometrianeonatal.core.designsystem.StatusBadge
 
+/**
+ * Tela Compose de sincronizacao manual com fila pendente e feedback da ultima execucao.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SyncScreen(

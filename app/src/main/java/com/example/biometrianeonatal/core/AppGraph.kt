@@ -40,6 +40,9 @@ import androidx.compose.material3.Text
 import com.example.biometrianeonatal.di.AppGraphDependencies
 import com.example.biometrianeonatal.ui.theme.BiometriaNeonatalTheme
 
+/**
+ * Objeto centralizador das rotas e helpers usados pela navegacao do aplicativo.
+ */
 object AppRoutes {
     const val LOGIN = "login"
     const val DASHBOARD = "dashboard/{userId}"
@@ -71,11 +74,16 @@ object AppRoutes {
     fun sync(userId: String) = "sync/$userId"
 }
 
+/**
+ * Composable raiz que conecta sessao autenticada, tema visual e grafo de navegacao.
+ */
 @Composable
 fun BiometriaNeonatalApp(
     dependencies: AppGraphDependencies,
 ) {
+    // Controla toda a pilha de telas Compose do app.
     val navController = rememberNavController()
+    // Observa a sessão atual para decidir automaticamente entre login e áreas autenticadas.
     val currentSession by dependencies.observeCurrentSessionUseCase().collectAsStateWithLifecycle(initialValue = null)
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route
@@ -83,6 +91,7 @@ fun BiometriaNeonatalApp(
     LaunchedEffect(currentSession?.id, currentRoute) {
         val currentUserId = currentSession?.id
         when {
+            // Se a sessão já existe e ainda estamos no login, redireciona para o dashboard do usuário logado.
             currentUserId != null && currentRoute == AppRoutes.LOGIN -> {
                 navController.navigate(AppRoutes.dashboard(currentUserId)) {
                     popUpTo(AppRoutes.LOGIN) { inclusive = true }
@@ -90,6 +99,7 @@ fun BiometriaNeonatalApp(
                 }
             }
 
+            // Se a sessão expirou ou foi encerrada, qualquer tela protegida volta para o login.
             currentUserId == null && currentRoute != null && currentRoute != AppRoutes.LOGIN -> {
                 navController.navigate(AppRoutes.LOGIN) {
                     popUpTo(navController.graph.startDestinationId) { inclusive = true }
@@ -104,6 +114,7 @@ fun BiometriaNeonatalApp(
             navController = navController,
             startDestination = AppRoutes.LOGIN,
         ) {
+            // A primeira rota sempre é o login; a sessão observada acima decide se o usuário permanece aqui.
             composable(AppRoutes.LOGIN) {
                 LoginScreen()
             }

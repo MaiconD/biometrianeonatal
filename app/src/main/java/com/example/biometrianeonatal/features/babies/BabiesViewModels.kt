@@ -29,6 +29,9 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
+/**
+ * Estado do formulario de recem-nascido com valores digitados, erros e flags de salvamento.
+ */
 data class BabyFormUiState(
     val babyId: String? = null,
     val hospitalId: String = "hospital-pb",
@@ -50,11 +53,15 @@ data class BabyFormUiState(
     val errorMessage: String? = null,
 )
 
+/**
+ * ViewModel que observa a listagem de bebes e executa exclusoes quando solicitadas.
+ */
 @HiltViewModel
 class BabiesListViewModel @Inject constructor(
     observeBabiesUseCase: ObserveBabiesUseCase,
     private val deleteBabyUseCase: DeleteBabyUseCase,
 ) : ViewModel() {
+    // A lista é mantida como StateFlow para atualização automática da UI sempre que o repositório mudar.
     val babies: StateFlow<List<BabyListItem>> = observeBabiesUseCase().stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
@@ -68,6 +75,9 @@ class BabiesListViewModel @Inject constructor(
     }
 }
 
+/**
+ * ViewModel do cadastro/edicao de bebe com carregamento inicial, validacao e persistencia.
+ */
 @HiltViewModel
 class BabyFormViewModel @Inject constructor(
     observeHospitalsUseCase: ObserveHospitalsUseCase,
@@ -77,6 +87,7 @@ class BabyFormViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
+    // Quando presente, indica que a tela está em modo edição e precisa hidratar o formulário existente.
     private val babyId: String? = savedStateHandle["babyId"]
 
     private val _uiState = MutableStateFlow(BabyFormUiState(babyId = babyId, isEditMode = babyId != null))
@@ -91,6 +102,7 @@ class BabyFormViewModel @Inject constructor(
     init {
         if (babyId != null) {
             viewModelScope.launch {
+                // Carrega uma única vez o rascunho salvo e normaliza os campos para o formato exibido na UI.
                 observeBabyUseCase(babyId).first()?.let { draft ->
                     _uiState.value = BabyFormUiState(
                         babyId = draft.id,
@@ -164,6 +176,7 @@ class BabyFormViewModel @Inject constructor(
 
     fun save(onSaved: (String) -> Unit) {
         val state = _uiState.value
+        // Centraliza todas as regras síncronas de validação antes de disparar escrita no repositório.
         val validatedState = state.copy(
             nameError = if (state.name.isBlank()) "Informe o nome do bebê." else null,
             birthDateError = when {
@@ -204,6 +217,7 @@ class BabyFormViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = validatedState.copy(isSaving = true, errorMessage = null)
             val currentState = _uiState.value
+            // A conversão para o formato de armazenamento acontece aqui para manter a UI sempre amigável ao usuário.
             val babyId = saveBabyUseCase(
                 BabyDraft(
                     id = currentState.babyId,
@@ -232,11 +246,17 @@ class BabyFormViewModel @Inject constructor(
     }
 }
 
+/**
+ * Estado imutavel `BabySummaryUiState` consumido pela interface Compose.
+ */
 data class BabySummaryUiState(
     val summary: BabyProfileSummary? = null,
     val guardians: List<GuardianDraft> = emptyList(),
 )
 
+/**
+ * ViewModel `BabySummaryViewModel` que expoe estado reativo e acoes da respectiva feature.
+ */
 @HiltViewModel
 class BabySummaryViewModel @Inject constructor(
     observeBabySummaryUseCase: ObserveBabySummaryUseCase,
@@ -263,6 +283,9 @@ class BabySummaryViewModel @Inject constructor(
     )
 }
 
+/**
+ * Estado imutavel `GuardiansUiState` consumido pela interface Compose.
+ */
 data class GuardiansUiState(
     val guardians: List<GuardianDraft> = emptyList(),
     val isSaving: Boolean = false,
@@ -272,6 +295,9 @@ data class GuardiansUiState(
     val editingGuardianDraft: GuardianDraft? = null,
 )
 
+/**
+ * ViewModel `GuardiansViewModel` que expoe estado reativo e acoes da respectiva feature.
+ */
 @HiltViewModel
 class GuardiansViewModel @Inject constructor(
     private val observeGuardiansUseCase: ObserveGuardiansUseCase,

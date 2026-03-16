@@ -83,6 +83,9 @@ import javax.inject.Named
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 
+/**
+ * Modulo Hilt responsavel por montar as dependencias compartilhadas da aplicacao.
+ */
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModules {

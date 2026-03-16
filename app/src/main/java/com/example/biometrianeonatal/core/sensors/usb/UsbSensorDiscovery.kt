@@ -14,6 +14,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
+/**
+ * Tipo `UsbSensorDevice` que organiza dados ou comportamento desta camada.
+ */
 data class UsbSensorDevice(
     val deviceId: Int,
     val deviceName: String,
@@ -23,6 +26,9 @@ data class UsbSensorDevice(
     val hasPermission: Boolean,
 )
 
+/**
+ * Tipo `UsbSensorState` que organiza dados ou comportamento desta camada.
+ */
 data class UsbSensorState(
     val devices: List<UsbSensorDevice> = emptyList(),
     val selectedDeviceId: Int? = null,
@@ -33,6 +39,9 @@ data class UsbSensorState(
         get() = devices.firstOrNull { it.deviceId == selectedDeviceId }
 }
 
+/**
+ * Interface `UsbSensorDiscovery` que define um contrato reutilizado por outras camadas.
+ */
 interface UsbSensorDiscovery {
     fun observeState(): Flow<UsbSensorState>
     fun currentState(): UsbSensorState
@@ -41,6 +50,9 @@ interface UsbSensorDiscovery {
     suspend fun requestPermissionForSelectedOrFirst()
 }
 
+/**
+ * Tipo `AndroidUsbSensorDiscovery` que organiza dados ou comportamento desta camada.
+ */
 @Singleton
 class AndroidUsbSensorDiscovery @Inject constructor(
     @param:ApplicationContext private val context: Context,

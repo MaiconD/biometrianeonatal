@@ -42,14 +42,20 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
+/**
+ * Tela Compose de autenticacao para selecionar hospital e iniciar a sessao do profissional.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
 ) {
+    // Estado único da tela com credenciais, hospital selecionado e mensagens de feedback.
     val viewModel: LoginViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    // Os hospitais disponíveis podem vir tanto do seed local quanto do backend autenticador.
     val hospitals by viewModel.hospitals.collectAsStateWithLifecycle()
+    // Controla apenas a abertura visual do dropdown; o valor selecionado fica no ViewModel.
     var expanded by remember { mutableStateOf(false) }
 
     Column(
@@ -137,6 +143,7 @@ fun LoginScreen(
                     expanded = expanded,
                     onExpandedChange = { expanded = !expanded },
                 ) {
+                    // O hospital compõe o contexto de login e define a unidade vinculada à sessão persistida.
                     val selectedHospitalName = hospitals.firstOrNull { it.id == uiState.selectedHospitalId }?.name.orEmpty()
                     OutlinedTextField(
                         value = selectedHospitalName,

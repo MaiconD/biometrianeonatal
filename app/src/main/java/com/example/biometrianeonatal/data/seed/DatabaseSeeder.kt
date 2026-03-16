@@ -16,6 +16,9 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 
+/**
+ * Tipo `DatabaseSeeder` que organiza dados ou comportamento desta camada.
+ */
 class DatabaseSeeder(
     private val database: AppDatabase,
 ) {

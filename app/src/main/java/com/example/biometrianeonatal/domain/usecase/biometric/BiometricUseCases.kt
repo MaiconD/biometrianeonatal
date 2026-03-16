@@ -9,6 +9,9 @@ import com.example.biometrianeonatal.domain.model.SessionContext
 import com.example.biometrianeonatal.domain.repository.BiometricRepository
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Caso de uso `ObserveSessionContextUseCase` que observa um fluxo de dados da camada de dominio.
+ */
 class ObserveSessionContextUseCase(
     private val biometricRepository: BiometricRepository,
 ) {
@@ -17,6 +20,9 @@ class ObserveSessionContextUseCase(
     }
 }
 
+/**
+ * Caso de uso `ObserveSensorRuntimeUseCase` que observa um fluxo de dados da camada de dominio.
+ */
 class ObserveSensorRuntimeUseCase(
     private val biometricRepository: BiometricRepository,
 ) {
@@ -25,6 +31,9 @@ class ObserveSensorRuntimeUseCase(
     }
 }
 
+/**
+ * Caso de uso `ObserveSessionProgressUseCase` que observa um fluxo de dados da camada de dominio.
+ */
 class ObserveSessionProgressUseCase(
     private val biometricRepository: BiometricRepository,
 ) {
@@ -33,6 +42,9 @@ class ObserveSessionProgressUseCase(
     }
 }
 
+/**
+ * Caso de uso `SelectCaptureSourceUseCase` que coordena uma acao pontual do fluxo biometrico.
+ */
 class SelectCaptureSourceUseCase(
     private val biometricRepository: BiometricRepository,
 ) {
@@ -41,6 +53,9 @@ class SelectCaptureSourceUseCase(
     }
 }
 
+/**
+ * Caso de uso `RequestUsbPermissionUseCase` que coordena uma acao pontual do fluxo biometrico.
+ */
 class RequestUsbPermissionUseCase(
     private val biometricRepository: BiometricRepository,
 ) {
@@ -49,6 +64,9 @@ class RequestUsbPermissionUseCase(
     }
 }
 
+/**
+ * Caso de uso `SelectUsbDeviceUseCase` que coordena uma acao pontual do fluxo biometrico.
+ */
 class SelectUsbDeviceUseCase(
     private val biometricRepository: BiometricRepository,
 ) {
@@ -57,6 +75,9 @@ class SelectUsbDeviceUseCase(
     }
 }
 
+/**
+ * Caso de uso `ObservePendingCaptureUseCase` que observa um fluxo de dados da camada de dominio.
+ */
 class ObservePendingCaptureUseCase(
     private val biometricRepository: BiometricRepository,
 ) {
@@ -65,6 +86,9 @@ class ObservePendingCaptureUseCase(
     }
 }
 
+/**
+ * Caso de uso `OpenPendingCaptureUseCase` que abre um recurso seguro previamente armazenado.
+ */
 class OpenPendingCaptureUseCase(
     private val biometricRepository: BiometricRepository,
 ) {
@@ -73,6 +97,9 @@ class OpenPendingCaptureUseCase(
     }
 }
 
+/**
+ * Caso de uso `StartBiometricSessionUseCase` que inicia um novo fluxo operacional no dominio.
+ */
 class StartBiometricSessionUseCase(
     private val biometricRepository: BiometricRepository,
 ) {
@@ -81,6 +108,9 @@ class StartBiometricSessionUseCase(
     }
 }
 
+/**
+ * Caso de uso `GenerateCapturePreviewUseCase` que gera um artefato intermediario usado pelo fluxo principal.
+ */
 class GenerateCapturePreviewUseCase(
     private val biometricRepository: BiometricRepository,
 ) {
@@ -89,6 +119,9 @@ class GenerateCapturePreviewUseCase(
     }
 }
 
+/**
+ * Caso de uso `AcceptCaptureUseCase` que coordena uma acao pontual do fluxo biometrico.
+ */
 class AcceptCaptureUseCase(
     private val biometricRepository: BiometricRepository,
 ) {
@@ -97,6 +130,9 @@ class AcceptCaptureUseCase(
     }
 }
 
+/**
+ * Caso de uso `DiscardCaptureUseCase` que coordena uma acao pontual do fluxo biometrico.
+ */
 class DiscardCaptureUseCase(
     private val biometricRepository: BiometricRepository,
 ) {

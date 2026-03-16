@@ -83,6 +83,9 @@ private val DarkColorScheme = darkColorScheme(
     surfaceContainerHighest = SurfaceVariantDark,
 )
 
+/**
+ * Theme Compose que aplica esquema de cores e tipografia padrao do aplicativo.
+ */
 @Composable
 fun BiometriaNeonatalTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),

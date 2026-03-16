@@ -36,6 +36,9 @@ import com.example.biometrianeonatal.core.designsystem.SectionTitle
 import com.example.biometrianeonatal.core.designsystem.StatCard
 import com.example.biometrianeonatal.core.designsystem.StatusBadge
 
+/**
+ * Tela de historico local que resume e lista sessoes biometricas ja registradas.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistoryScreen(

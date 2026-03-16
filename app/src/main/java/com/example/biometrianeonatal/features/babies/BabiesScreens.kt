@@ -87,6 +87,9 @@ import java.time.LocalDate
 import java.time.ZoneOffset
 import java.util.Locale
 
+/**
+ * Tela Compose de listagem dos bebes com busca, acoes permitidas e atalhos de fluxo.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BabiesListScreen(
@@ -97,13 +100,18 @@ fun BabiesListScreen(
     onCollect: (String) -> Unit,
     onEditBaby: (String) -> Unit,
 ) {
+    // ViewModel responsável por fornecer a lista de bebês
     val viewModel: BabiesListViewModel = hiltViewModel()
+    // Estado reativo da lista de bebês
     val babies by viewModel.babies.collectAsStateWithLifecycle()
+    // Permissões do usuário para ações na tela
     val canCreateOrEditBaby = AccessPolicy.canCreateOrEditBaby(userRole)
     val canManageGuardians = AccessPolicy.canManageGuardians(userRole)
     val canCollectBiometrics = AccessPolicy.canCollectBiometrics(userRole)
+    // Estado do campo de busca
     var query by remember { mutableStateOf("") }
 
+    // Filtra bebês conforme a busca
     val filteredBabies = remember(babies, query) {
         babies.filter {
             query.isBlank() ||
@@ -122,6 +130,7 @@ fun BabiesListScreen(
                 },
                 title = { Text("Bebês") },
                 actions = {
+                    // Botão para adicionar novo bebê, se permitido
                     if (canCreateOrEditBaby) {
                         IconButton(onClick = onNewBaby) {
                             Icon(Icons.Outlined.Add, contentDescription = null)
@@ -139,6 +148,7 @@ fun BabiesListScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             item {
+                // Campo de busca
                 OutlinedTextField(
                     value = query,
                     onValueChange = { query = it },
@@ -149,6 +159,7 @@ fun BabiesListScreen(
                     singleLine = true,
                 )
             }
+            // Exibe aviso se o usuário só pode consultar
             if (!canCreateOrEditBaby && !canCollectBiometrics && !canManageGuardians) {
                 item {
                     Card(
@@ -171,6 +182,7 @@ fun BabiesListScreen(
                     }
                 }
             }
+            // Exibe mensagem se não houver bebês
             if (filteredBabies.isEmpty()) {
                 item {
                     Card(
@@ -193,6 +205,7 @@ fun BabiesListScreen(
                     }
                 }
             }
+            // Lista de cartões de bebês
             items(filteredBabies, key = { it.id }) { baby ->
                 Card(
                     modifier = Modifier.fillMaxWidth(),
@@ -225,7 +238,7 @@ fun BabiesListScreen(
                             }
                             StatusBadge(status = baby.status)
                         }
-                        
+                        // Botões de ação conforme permissão
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -236,7 +249,6 @@ fun BabiesListScreen(
                                     Text("Editar")
                                 }
                             }
-                            
                             if (canCollectBiometrics) {
                                 Button(
                                     onClick = { onCollect(baby.id) },
@@ -263,6 +275,9 @@ fun BabiesListScreen(
     }
 }
 
+/**
+ * Tela Compose `BabySummaryScreen` responsavel por uma etapa do fluxo apresentado ao usuario.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BabySummaryScreen(
@@ -560,6 +575,9 @@ private fun LatestSessionOverviewCard(
     }
 }
 
+/**
+ * Tela Compose `BabyRegistrationScreen` responsavel por uma etapa do fluxo apresentado ao usuario.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BabyRegistrationScreen(
@@ -842,6 +860,9 @@ fun BabyRegistrationScreen(
     }
 }
 
+/**
+ * Tela Compose `GuardiansScreen` responsavel por uma etapa do fluxo apresentado ao usuario.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun GuardiansScreen(
@@ -1414,4 +1435,6 @@ private fun SessionLifecycleStatus.toUiLabel(): String {
         SessionLifecycleStatus.COMPLETED -> "Concluída"
     }
 }
+
+
 

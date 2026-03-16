@@ -2,6 +2,9 @@ package com.example.biometrianeonatal.core.security
 
 import com.example.biometrianeonatal.core.database.UserRole
 
+/**
+ * Politica central de autorizacao por perfil para habilitar ou bloquear fluxos da aplicacao.
+ */
 object AccessPolicy {
     fun canViewBabySummary(role: UserRole?): Boolean {
         return canAccessReadOnlyBabies(role)

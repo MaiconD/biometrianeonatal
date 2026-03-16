@@ -7,6 +7,9 @@ import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response
 
+/**
+ * Gerenciador da sessao autenticada que valida expiracao e tenta refresh de token quando necessario.
+ */
 @Singleton
 class AuthSessionManager @Inject constructor(
     private val sessionStore: SessionStore,
@@ -20,6 +23,7 @@ class AuthSessionManager @Inject constructor(
         val accessToken = sessionStore.getAccessToken()
         val expiresAtEpochMillis = sessionStore.getAccessTokenExpiresAtEpochMillis()
         if (accessToken.isNullOrBlank() || expiresAtEpochMillis == null) return null
+        // Usa uma margem de segurança para evitar disparar requisições com token prestes a expirar.
         if (System.currentTimeMillis() < expiresAtEpochMillis - TOKEN_EXPIRY_SKEW_MILLIS) {
             return accessToken
         }
@@ -36,6 +40,7 @@ class AuthSessionManager @Inject constructor(
 
     fun refreshAccessTokenIfNeeded(): String? {
         val refreshToken = sessionStore.getRefreshToken() ?: return null
+        // O interceptor precisa de uma decisão síncrona; por isso o refresh é executado de forma bloqueante aqui.
         val refreshedTokens = runBlocking {
             authRemoteDataSource.refresh(refreshToken)
         } ?: return null.also { sessionStore.clear() }
@@ -53,10 +58,14 @@ class AuthSessionManager @Inject constructor(
     }
 }
 
+/**
+ * Interceptor HTTP que injeta o token Bearer valido nas chamadas autenticadas.
+ */
 class AuthTokenInterceptor @Inject constructor(
     private val authSessionManager: AuthSessionManager,
 ) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
+        // Se não houver token válido, a chamada segue sem cabeçalho para que a API responda conforme o endpoint.
         val token = authSessionManager.getValidAccessToken()
         val request = if (token.isNullOrBlank()) {
             chain.request()

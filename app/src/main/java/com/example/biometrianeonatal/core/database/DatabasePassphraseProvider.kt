@@ -9,6 +9,9 @@ import java.security.SecureRandom
 import java.nio.charset.StandardCharsets
 import javax.inject.Inject
 
+/**
+ * Provedor da senha do banco criptografado persistida com EncryptedSharedPreferences.
+ */
 class DatabasePassphraseProvider @Inject constructor(
     @ApplicationContext context: Context,
 ) {

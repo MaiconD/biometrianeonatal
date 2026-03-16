@@ -10,6 +10,9 @@ import com.example.biometrianeonatal.domain.model.OpenedArtifact
 import com.example.biometrianeonatal.domain.repository.BabyRepository
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Caso de uso `ObserveBabiesUseCase` que observa um fluxo de dados da camada de dominio.
+ */
 class ObserveBabiesUseCase(
     private val babyRepository: BabyRepository,
 ) {
@@ -18,6 +21,9 @@ class ObserveBabiesUseCase(
     }
 }
 
+/**
+ * Caso de uso `ObserveBabyUseCase` que observa um fluxo de dados da camada de dominio.
+ */
 class ObserveBabyUseCase(
     private val babyRepository: BabyRepository,
 ) {
@@ -26,6 +32,9 @@ class ObserveBabyUseCase(
     }
 }
 
+/**
+ * Caso de uso `ObserveBabySummaryUseCase` que observa um fluxo de dados da camada de dominio.
+ */
 class ObserveBabySummaryUseCase(
     private val babyRepository: BabyRepository,
 ) {
@@ -34,6 +43,9 @@ class ObserveBabySummaryUseCase(
     }
 }
 
+/**
+ * Caso de uso `SaveBabyUseCase` que persiste alteracoes solicitadas pela interface.
+ */
 class SaveBabyUseCase(
     private val babyRepository: BabyRepository,
 ) {
@@ -42,6 +54,9 @@ class SaveBabyUseCase(
     }
 }
 
+/**
+ * Caso de uso `DeleteBabyUseCase` que remove registros de acordo com as regras de negocio.
+ */
 class DeleteBabyUseCase(
     private val babyRepository: BabyRepository,
 ) {
@@ -50,6 +65,9 @@ class DeleteBabyUseCase(
     }
 }
 
+/**
+ * Caso de uso `ObserveGuardiansUseCase` que observa um fluxo de dados da camada de dominio.
+ */
 class ObserveGuardiansUseCase(
     private val babyRepository: BabyRepository,
 ) {
@@ -58,6 +76,9 @@ class ObserveGuardiansUseCase(
     }
 }
 
+/**
+ * Caso de uso `SaveGuardiansUseCase` que persiste alteracoes solicitadas pela interface.
+ */
 class SaveGuardiansUseCase(
     private val babyRepository: BabyRepository,
 ) {

@@ -13,6 +13,9 @@ import com.example.biometrianeonatal.data.remote.RemoteGuardianDto
 import com.example.biometrianeonatal.data.remote.RemoteSessionDto
 import com.example.biometrianeonatal.data.remote.SyncBatchPayloadDto
 
+/**
+ * Montador do payload de sincronizacao a partir das entidades pendentes no banco local.
+ */
 class SyncPayloadAssembler(
     private val database: AppDatabase,
     private val localCryptoService: LocalCryptoService,

@@ -21,6 +21,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
+/**
+ * Tipo `AdaptiveSensorCapturePort` que organiza dados ou comportamento desta camada.
+ */
 @Singleton
 class AdaptiveSensorCapturePort @Inject constructor(
     @param:ApplicationContext private val context: Context,

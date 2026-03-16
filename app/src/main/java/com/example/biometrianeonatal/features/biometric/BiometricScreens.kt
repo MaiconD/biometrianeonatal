@@ -52,6 +52,9 @@ private val fingerOptions = listOf(
     "POLEGAR_ESQUERDO" to "Polegar esquerdo",
 )
 
+/**
+ * Tela inicial da coleta biometrica com contexto do bebe, status do sensor e inicio da sessao.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BiometricSessionScreen(
@@ -197,6 +200,9 @@ fun BiometricSessionScreen(
     }
 }
 
+/**
+ * Tela Compose `CaptureBiometricScreen` responsavel por uma etapa do fluxo apresentado ao usuario.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CaptureBiometricScreen(
@@ -425,6 +431,9 @@ private fun CaptureSourceSelector(
     }
 }
 
+/**
+ * Tela Compose `CaptureReviewScreen` responsavel por uma etapa do fluxo apresentado ao usuario.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CaptureReviewScreen(

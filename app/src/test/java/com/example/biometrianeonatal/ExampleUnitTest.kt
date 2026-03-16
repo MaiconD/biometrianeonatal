@@ -7,12 +7,16 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 import kotlinx.coroutines.runBlocking
 
+/**
+ * Testes rápidos do adaptador fake usados para garantir metadados coerentes no modo demo.
+ */
 class ExampleUnitTest {
 
     private val sensorAdapter = FakeSensorAdapter()
 
     @Test
     fun capture_generates_preview_with_expected_metadata() = runBlocking {
+        // Valida que a captura simulada preserva os identificadores recebidos e gera metadados plausíveis.
         val capture = sensorAdapter.capture(
             sessionId = "session-01",
             fingerCode = "POLEGAR_DIREITO",
@@ -29,6 +33,7 @@ class ExampleUnitTest {
 
     @Test
     fun capture_creates_distinct_image_payloads_between_invocations() = runBlocking {
+        // Mesmo no modo fake, cada captura deve produzir um payload novo para representar coletas distintas.
         val first = sensorAdapter.capture("session-01", "POLEGAR_DIREITO")
         val second = sensorAdapter.capture("session-01", "POLEGAR_DIREITO")
 

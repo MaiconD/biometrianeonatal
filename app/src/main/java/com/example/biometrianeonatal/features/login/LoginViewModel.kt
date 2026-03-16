@@ -14,6 +14,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
+/**
+ * Estado imutavel do formulario de login com credenciais, hospital e feedback de erro.
+ */
 data class LoginUiState(
     val email: String = "operador@utfpr.edu.br",
     val password: String = "123456",
@@ -22,6 +25,9 @@ data class LoginUiState(
     val errorMessage: String? = null,
 )
 
+/**
+ * ViewModel do login que carrega hospitais e coordena a autenticacao.
+ */
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     observeHospitalsUseCase: ObserveHospitalsUseCase,

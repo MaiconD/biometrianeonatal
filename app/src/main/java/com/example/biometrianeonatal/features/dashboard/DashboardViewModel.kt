@@ -15,6 +15,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel que combina dados do usuario logado e metricas resumidas do dispositivo.
+ */
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
     observeUserUseCase: ObserveUserUseCase,

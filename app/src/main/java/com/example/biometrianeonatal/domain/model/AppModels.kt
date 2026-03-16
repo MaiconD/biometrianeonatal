@@ -6,6 +6,9 @@ import com.example.biometrianeonatal.core.database.Sex
 import com.example.biometrianeonatal.core.database.SyncStatus
 import com.example.biometrianeonatal.core.database.UserRole
 
+/**
+ * Tipo `Hospital` que organiza dados ou comportamento desta camada.
+ */
 data class Hospital(
     val id: String,
     val name: String,
@@ -13,6 +16,9 @@ data class Hospital(
     val state: String,
 )
 
+/**
+ * Tipo `AuthUser` que organiza dados ou comportamento desta camada.
+ */
 data class AuthUser(
     val id: String,
     val name: String,
@@ -21,12 +27,18 @@ data class AuthUser(
     val hospitalId: String,
 )
 
+/**
+ * Tipo `DashboardSummary` que organiza dados ou comportamento desta camada.
+ */
 data class DashboardSummary(
     val babiesToday: Int,
     val collectionsToday: Int,
     val pendingSync: Int,
 )
 
+/**
+ * Tipo `BabyListItem` que organiza dados ou comportamento desta camada.
+ */
 data class BabyListItem(
     val id: String,
     val name: String,
@@ -36,6 +48,9 @@ data class BabyListItem(
     val status: SyncStatus,
 )
 
+/**
+ * Tipo `BabyDraft` que organiza dados ou comportamento desta camada.
+ */
 data class BabyDraft(
     val id: String? = null,
     val hospitalId: String = "",
@@ -49,6 +64,9 @@ data class BabyDraft(
     val observations: String = "",
 )
 
+/**
+ * Tipo `GuardianDraft` que organiza dados ou comportamento desta camada.
+ */
 data class GuardianDraft(
     val id: String? = null,
     val name: String = "",
@@ -61,12 +79,18 @@ data class GuardianDraft(
     val signatureBase64: String? = null,
 )
 
+/**
+ * Tipo `ConsentAttachmentInput` que organiza dados ou comportamento desta camada.
+ */
 class ConsentAttachmentInput(
     val originalFileName: String,
     val contentBytes: ByteArray,
     val sourceUri: String? = null,
 )
 
+/**
+ * Enumeracao `ArtifactIntegrityStatus` usada para restringir valores validos do dominio.
+ */
 enum class ArtifactIntegrityStatus {
     NOT_ATTACHED,
     READY_TO_ENCRYPT,
@@ -76,6 +100,9 @@ enum class ArtifactIntegrityStatus {
     READ_ERROR,
 }
 
+/**
+ * Tipo `ArtifactInspection` que organiza dados ou comportamento desta camada.
+ */
 data class ArtifactInspection(
     val fileName: String = "",
     val artifactUri: String = "",
@@ -85,18 +112,27 @@ data class ArtifactInspection(
     val message: String? = null,
 )
 
+/**
+ * Tipo `OpenedArtifact` que organiza dados ou comportamento desta camada.
+ */
 data class OpenedArtifact(
     val fileName: String,
     val contentUri: String,
     val mimeType: String,
 )
 
+/**
+ * Enumeracao `CaptureSource` usada para restringir valores validos do dominio.
+ */
 enum class CaptureSource {
     DEMO_LOCAL,
     TABLET_CAMERA,
     USB_SENSOR,
 }
 
+/**
+ * Tipo `CaptureSourceOption` que organiza dados ou comportamento desta camada.
+ */
 data class CaptureSourceOption(
     val source: CaptureSource,
     val label: String,
@@ -104,6 +140,9 @@ data class CaptureSourceOption(
     val detailMessage: String? = null,
 )
 
+/**
+ * Tipo `UsbDeviceOption` que organiza dados ou comportamento desta camada.
+ */
 data class UsbDeviceOption(
     val deviceId: Int,
     val label: String,
@@ -111,6 +150,9 @@ data class UsbDeviceOption(
     val hasPermission: Boolean,
 )
 
+/**
+ * Tipo `SessionContext` que organiza dados ou comportamento desta camada.
+ */
 data class SessionContext(
     val babyName: String,
     val babyAgeLabel: String,
@@ -123,6 +165,9 @@ data class SessionContext(
     val supportsLivePreview: Boolean = false,
 )
 
+/**
+ * Tipo `SensorRuntimeInfo` que organiza dados ou comportamento desta camada.
+ */
 data class SensorRuntimeInfo(
     val sensorName: String = "Sensor indisponível",
     val sensorVersion: String = "-",
@@ -141,6 +186,9 @@ data class SensorRuntimeInfo(
     val lastErrorMessage: String? = null,
 )
 
+/**
+ * Tipo `CapturePreview` que organiza dados ou comportamento desta camada.
+ */
 data class CapturePreview(
     val sessionId: String,
     val fingerCode: String,
@@ -160,6 +208,9 @@ val DemoRequiredFingerCodes = listOf(
     "POLEGAR_ESQUERDO",
 )
 
+/**
+ * Modelo que calcula progresso, proximo dedo sugerido e conclusao da sessao biometrica.
+ */
 data class SessionCaptureProgress(
     val sessionId: String = "",
     val requiredFingerCodes: List<String> = DemoRequiredFingerCodes,
@@ -184,6 +235,9 @@ data class SessionCaptureProgress(
         get() = sessionId.isNotBlank() && remainingFingerCodes.isEmpty()
 }
 
+/**
+ * Resumo agregado do perfil do bebe com responsaveis, consentimento e ultima sessao biometrica.
+ */
 data class BabyProfileSummary(
     val baby: BabyDraft,
     val guardiansCount: Int = 0,
@@ -216,6 +270,9 @@ data class BabyProfileSummary(
             !latestSessionProgress.isComplete
 }
 
+/**
+ * Tipo `SessionListItem` que organiza dados ou comportamento desta camada.
+ */
 data class SessionListItem(
     val id: String,
     val babyName: String,
@@ -224,6 +281,9 @@ data class SessionListItem(
     val syncStatus: SyncStatus,
 )
 
+/**
+ * Tipo `SessionCaptureRecord` que organiza dados ou comportamento desta camada.
+ */
 data class SessionCaptureRecord(
     val id: String,
     val fingerCode: String,
@@ -235,6 +295,9 @@ data class SessionCaptureRecord(
     val imageChecksumSha256: String,
 )
 
+/**
+ * Tipo `SessionHistoryDetail` que organiza dados ou comportamento desta camada.
+ */
 data class SessionHistoryDetail(
     val id: String,
     val babyId: String,
@@ -251,6 +314,9 @@ data class SessionHistoryDetail(
     val captures: List<SessionCaptureRecord> = emptyList(),
 )
 
+/**
+ * Tipo `PendingSyncItem` que organiza dados ou comportamento desta camada.
+ */
 data class PendingSyncItem(
     val sessionId: String,
     val babyName: String,
@@ -258,12 +324,18 @@ data class PendingSyncItem(
     val syncStatus: SyncStatus,
 )
 
+/**
+ * Enumeracao `SyncExecutionStatus` usada para restringir valores validos do dominio.
+ */
 enum class SyncExecutionStatus {
     SUCCESS,
     FALLBACK_SUCCESS,
     ERROR,
 }
 
+/**
+ * Tipo `SyncExecutionResult` que organiza dados ou comportamento desta camada.
+ */
 data class SyncExecutionResult(
     val status: SyncExecutionStatus,
     val syncedCount: Int,

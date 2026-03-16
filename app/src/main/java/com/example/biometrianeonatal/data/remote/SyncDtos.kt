@@ -1,5 +1,8 @@
 package com.example.biometrianeonatal.data.remote
 
+/**
+ * Tipo `SyncBatchPayloadDto` que organiza dados ou comportamento desta camada.
+ */
 data class SyncBatchPayloadDto(
     val babies: List<RemoteBabyDto>,
     val guardians: List<RemoteGuardianDto>,
@@ -7,6 +10,9 @@ data class SyncBatchPayloadDto(
     val fingerprints: List<RemoteFingerprintDto>,
 )
 
+/**
+ * Tipo `RemoteBabyDto` que organiza dados ou comportamento desta camada.
+ */
 data class RemoteBabyDto(
     val id: String,
     val name: String,
@@ -22,6 +28,9 @@ data class RemoteBabyDto(
     val deletedAt: String?,
 )
 
+/**
+ * Tipo `RemoteGuardianDto` que organiza dados ou comportamento desta camada.
+ */
 data class RemoteGuardianDto(
     val id: String,
     val babyId: String,
@@ -39,6 +48,9 @@ data class RemoteGuardianDto(
     val deletedAt: String?,
 )
 
+/**
+ * Tipo `RemoteSessionDto` que organiza dados ou comportamento desta camada.
+ */
 data class RemoteSessionDto(
     val id: String,
     val babyId: String,
@@ -51,6 +63,9 @@ data class RemoteSessionDto(
     val notes: String,
 )
 
+/**
+ * Tipo `RemoteFingerprintDto` que organiza dados ou comportamento desta camada.
+ */
 data class RemoteFingerprintDto(
     val id: String,
     val sessionId: String,

@@ -6,6 +6,9 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
+/**
+ * Garante que as conversões de data do formulário permaneçam consistentes entre UI e persistência.
+ */
 class BabiesFormValidationTest {
 
     @Test
@@ -20,6 +23,7 @@ class BabiesFormValidationTest {
 
     @Test
     fun birthDate_round_trip_preserves_selected_day() {
+        // O valor retornado ao usuário após salvar e reabrir o formulário deve representar o mesmo dia.
         val selectedDate = "08/08/2024"
 
         val storedDate = toStorageBirthDate(selectedDate)

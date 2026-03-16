@@ -12,6 +12,9 @@ import com.example.biometrianeonatal.domain.model.SyncExecutionStatus
 import java.time.LocalDateTime
 import java.util.UUID
 
+/**
+ * Orquestrador da sincronizacao local-remota com tratamento de sucesso, fallback e falhas.
+ */
 class SyncCoordinator(
     private val database: AppDatabase,
     private val payloadAssembler: SyncPayloadAssembler,

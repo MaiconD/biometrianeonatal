@@ -43,6 +43,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.example.biometrianeonatal.core.database.SyncStatus
 
+/**
+ * Funcao de topo `SectionTitle` usada como parte do fluxo principal do arquivo.
+ */
 @Composable
 fun SectionTitle(
     title: String,
@@ -66,6 +69,9 @@ fun SectionTitle(
     }
 }
 
+/**
+ * Funcao de topo `StatCard` usada como parte do fluxo principal do arquivo.
+ */
 @Composable
 fun StatCard(
     title: String,
@@ -98,6 +104,9 @@ fun StatCard(
     }
 }
 
+/**
+ * Funcao de topo `FormSectionCard` usada como parte do fluxo principal do arquivo.
+ */
 @Composable
 fun FormSectionCard(
     title: String,
@@ -122,6 +131,9 @@ fun FormSectionCard(
     }
 }
 
+/**
+ * Funcao de topo `AppTextField` usada como parte do fluxo principal do arquivo.
+ */
 @Composable
 fun AppTextField(
     value: String,
@@ -162,6 +174,9 @@ fun AppTextField(
     )
 }
 
+/**
+ * Funcao de topo `AppDropdownField` usada como parte do fluxo principal do arquivo.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppDropdownField(
@@ -207,6 +222,9 @@ fun AppDropdownField(
     }
 }
 
+/**
+ * Funcao de topo `StatusBadge` usada como parte do fluxo principal do arquivo.
+ */
 @Composable
 fun StatusBadge(
     status: SyncStatus,
@@ -241,6 +259,9 @@ fun StatusBadge(
     }
 }
 
+/**
+ * Funcao de topo `AppPickerField` usada como parte do fluxo principal do arquivo.
+ */
 @Composable
 fun AppPickerField(
     value: String,

@@ -37,6 +37,9 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
+/**
+ * Estado do fluxo biometrico com dedo ativo, sessao corrente e resultado da revisao segura.
+ */
 data class BiometricUiState(
     val activeFinger: String = "POLEGAR_DIREITO",
     val sessionId: String? = null,
@@ -47,6 +50,9 @@ data class BiometricUiState(
     val reviewArtifactErrorMessage: String? = null,
 )
 
+/**
+ * ViewModel central da coleta biometrica com captura, revisao, aceite e descarte.
+ */
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class BiometricViewModel @Inject constructor(
@@ -66,12 +72,14 @@ class BiometricViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
+    // Identificadores recebidos pela navegação para reconstruir o contexto completo da coleta.
     private val babyId: String = checkNotNull(savedStateHandle["babyId"])
     private val operatorId: String = checkNotNull(savedStateHandle["userId"])
     private val initialSessionId: String? = savedStateHandle["sessionId"]
 
     private val _uiState = MutableStateFlow(BiometricUiState(sessionId = initialSessionId))
     val uiState: StateFlow<BiometricUiState> = _uiState.asStateFlow()
+    // Garante que a sugestão automática do próximo dedo aconteça só uma vez ao retomar uma sessão em andamento.
     private var hasAlignedInitialSuggestedFinger = false
 
     val sessionContext: StateFlow<SessionContext?> = observeSessionContextUseCase(
@@ -98,6 +106,7 @@ class BiometricViewModel @Inject constructor(
     val pendingCapture: StateFlow<CapturePreview?> = _uiState
         .map { it.sessionId }
         .filterNotNull()
+        // A captura pendente sempre é observada a partir da sessão atualmente ativa na UI.
         .flatMapLatest { sessionId ->
             observePendingCaptureUseCase(sessionId)
         }
@@ -110,6 +119,7 @@ class BiometricViewModel @Inject constructor(
     val sessionProgress: StateFlow<SessionCaptureProgress> = _uiState
         .map { it.sessionId }
         .filterNotNull()
+        // O progresso também troca dinamicamente quando a sessão muda ou é retomada.
         .flatMapLatest { sessionId ->
             observeSessionProgressUseCase(sessionId)
         }
@@ -123,6 +133,7 @@ class BiometricViewModel @Inject constructor(
         if (initialSessionId != null) {
             viewModelScope.launch {
                 sessionProgress.collect { progress ->
+                    // Ao abrir uma sessão existente, a UI é reposicionada no próximo dedo sugerido pelo domínio.
                     if (hasAlignedInitialSuggestedFinger || progress.sessionId.isBlank()) return@collect
                     hasAlignedInitialSuggestedFinger = true
                     progress.nextSuggestedFingerCode
@@ -174,6 +185,7 @@ class BiometricViewModel @Inject constructor(
                 reviewArtifactErrorMessage = null,
             )
             runCatching {
+                // Abertura protegida da captura temporária para revisão visual antes do aceite definitivo.
                 openPendingCaptureUseCase(sessionId)
             }.onSuccess { openedArtifact ->
                 _uiState.value = _uiState.value.copy(
@@ -203,6 +215,7 @@ class BiometricViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(isCapturing = true, captureErrorMessage = null)
             runCatching {
+                // O dedo ativo vem do estado atual para que a UI possa orientar a coleta seguinte sem acoplamento extra.
                 generateCapturePreviewUseCase(sessionId, _uiState.value.activeFinger)
             }.onSuccess {
                 _uiState.value = _uiState.value.copy(isCapturing = false)
@@ -232,6 +245,7 @@ class BiometricViewModel @Inject constructor(
                 onSessionCompleted()
             } else {
                 _uiState.value = _uiState.value.copy(
+                    // O próprio progresso devolve o próximo dedo recomendado para reduzir erros operacionais.
                     activeFinger = progress.nextSuggestedFingerCode ?: _uiState.value.activeFinger,
                     reviewArtifact = null,
                     reviewArtifactErrorMessage = null,

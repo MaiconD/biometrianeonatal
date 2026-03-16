@@ -10,11 +10,17 @@ import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
 import javax.crypto.spec.GCMParameterSpec
 
+/**
+ * Contrato de criptografia local usado para proteger campos sensiveis antes da persistencia.
+ */
 interface LocalCryptoService {
     fun encrypt(value: String): String
     fun decryptIfNeeded(value: String): String
 }
 
+/**
+ * Implementacao baseada em Android Keystore para cifrar e decifrar valores locais.
+ */
 class AndroidKeystoreCryptoService : LocalCryptoService {
     private val keyAlias = "biometria_neonatal_local_v1"
     private val keyStoreProvider = "AndroidKeyStore"

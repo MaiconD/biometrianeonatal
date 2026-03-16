@@ -2,6 +2,9 @@ package com.example.biometrianeonatal.data.remote
 
 import com.example.biometrianeonatal.core.config.AppRuntimeConfig
 
+/**
+ * Tipo `FallbackSyncRemoteDataSource` que organiza dados ou comportamento desta camada.
+ */
 class FallbackSyncRemoteDataSource(
     private val appRuntimeConfig: AppRuntimeConfig,
     private val primary: SyncRemoteDataSource,

@@ -6,6 +6,9 @@ import com.example.biometrianeonatal.core.config.AppRuntimeConfig
 import java.util.UUID
 import javax.inject.Inject
 
+/**
+ * Tipo `AuthenticatedRemoteSession` que organiza dados ou comportamento desta camada.
+ */
 data class AuthenticatedRemoteSession(
     val accessToken: String,
     val refreshToken: String,
@@ -13,12 +16,18 @@ data class AuthenticatedRemoteSession(
     val user: RemoteAuthUserDto,
 )
 
+/**
+ * Interface `AuthRemoteDataSource` que define um contrato reutilizado por outras camadas.
+ */
 interface AuthRemoteDataSource {
     suspend fun login(email: String, password: String, hospitalId: String): AuthenticatedRemoteSession?
     suspend fun refresh(refreshToken: String): AuthTokensDto?
     suspend fun logout(refreshToken: String)
 }
 
+/**
+ * Tipo `RetrofitAuthRemoteDataSource` que organiza dados ou comportamento desta camada.
+ */
 class RetrofitAuthRemoteDataSource @Inject constructor(
     private val appRuntimeConfig: AppRuntimeConfig,
     private val authApiService: AuthApiService,
@@ -66,6 +75,9 @@ class RetrofitAuthRemoteDataSource @Inject constructor(
     }
 }
 
+/**
+ * Tipo `LocalFallbackAuthRemoteDataSource` que organiza dados ou comportamento desta camada.
+ */
 class LocalFallbackAuthRemoteDataSource @Inject constructor(
     private val database: AppDatabase,
 ) : AuthRemoteDataSource {
@@ -128,6 +140,9 @@ class LocalFallbackAuthRemoteDataSource @Inject constructor(
     }
 }
 
+/**
+ * Tipo `FallbackAuthRemoteDataSource` que organiza dados ou comportamento desta camada.
+ */
 class FallbackAuthRemoteDataSource @Inject constructor(
     private val appRuntimeConfig: AppRuntimeConfig,
     private val primary: RetrofitAuthRemoteDataSource,

@@ -11,12 +11,18 @@ import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
+/**
+ * Metadados minimos retornados apos salvar um artefato criptografado no dispositivo.
+ */
 data class StoredArtifact(
     val originalFileName: String,
     val artifactUri: String,
     val sha256: String,
 )
 
+/**
+ * Resultado da inspecao local de existencia, leitura e integridade de um artefato protegido.
+ */
 data class ArtifactInspectionResult(
     val exists: Boolean,
     val readable: Boolean,
@@ -24,6 +30,9 @@ data class ArtifactInspectionResult(
     val sizeBytes: Int,
 )
 
+/**
+ * Contrato para armazenamento seguro de anexos e capturas biometricas criptografadas.
+ */
 interface EncryptedArtifactStore {
     suspend fun saveConsentArtifact(
         babyId: String,
@@ -52,6 +61,9 @@ interface EncryptedArtifactStore {
     suspend fun deleteArtifact(artifactUri: String)
 }
 
+/**
+ * Implementacao Android do armazenamento criptografado de consentimentos e imagens de captura.
+ */
 class AndroidEncryptedArtifactStore @Inject constructor(
     private val context: Context,
 ) : EncryptedArtifactStore {

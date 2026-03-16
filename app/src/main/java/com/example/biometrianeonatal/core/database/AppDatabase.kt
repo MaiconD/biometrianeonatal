@@ -22,24 +22,36 @@ import kotlinx.coroutines.flow.Flow
 import net.sqlcipher.database.SQLiteDatabase as SqlCipherDatabase
 import net.sqlcipher.database.SupportFactory
 
+/**
+ * Enumeracao `UserRole` usada para restringir valores validos do dominio.
+ */
 enum class UserRole {
     OPERADOR,
     ADMINISTRADOR,
     PESQUISADOR,
 }
 
+/**
+ * Enumeracao `Sex` usada para restringir valores validos do dominio.
+ */
 enum class Sex {
     MASCULINO,
     FEMININO,
     NAO_INFORMADO,
 }
 
+/**
+ * Enumeracao `GuardianRelation` usada para restringir valores validos do dominio.
+ */
 enum class GuardianRelation {
     MAE,
     PAI,
     RESPONSAVEL,
 }
 
+/**
+ * Enumeracao `SyncStatus` usada para restringir valores validos do dominio.
+ */
 enum class SyncStatus {
     PENDING,
     SYNCING,
@@ -47,12 +59,18 @@ enum class SyncStatus {
     ERROR,
 }
 
+/**
+ * Enumeracao `SessionLifecycleStatus` usada para restringir valores validos do dominio.
+ */
 enum class SessionLifecycleStatus {
     DRAFT,
     IN_PROGRESS,
     COMPLETED,
 }
 
+/**
+ * Conversores Room usados para persistir enums e tipos de dominio em colunas textuais.
+ */
 class AppConverters {
     @TypeConverter
     fun fromUserRole(value: UserRole): String = value.name
@@ -85,6 +103,9 @@ class AppConverters {
     fun toSessionLifecycleStatus(value: String): SessionLifecycleStatus = SessionLifecycleStatus.valueOf(value)
 }
 
+/**
+ * Entidade Room `HospitalEntity` usada para persistir dados estruturados no banco local.
+ */
 @Entity(tableName = "hospitals")
 data class HospitalEntity(
     @PrimaryKey val id: String,
@@ -93,6 +114,9 @@ data class HospitalEntity(
     val state: String,
 )
 
+/**
+ * Entidade Room `UserEntity` usada para persistir dados estruturados no banco local.
+ */
 @Entity(tableName = "app_users")
 data class UserEntity(
     @PrimaryKey val id: String,
@@ -103,6 +127,9 @@ data class UserEntity(
     val hospitalId: String,
 )
 
+/**
+ * Entidade Room `BabyEntity` usada para persistir dados estruturados no banco local.
+ */
 @Entity(tableName = "babies")
 data class BabyEntity(
     @PrimaryKey val id: String,
@@ -120,6 +147,9 @@ data class BabyEntity(
     val deletedAt: String?,
 )
 
+/**
+ * Entidade Room `GuardianEntity` usada para persistir dados estruturados no banco local.
+ */
 @Entity(tableName = "guardians")
 data class GuardianEntity(
     @PrimaryKey val id: String,
@@ -137,6 +167,9 @@ data class GuardianEntity(
     val deletedAt: String?,
 )
 
+/**
+ * Entidade Room `BiometricSessionEntity` usada para persistir dados estruturados no banco local.
+ */
 @Entity(tableName = "biometric_sessions")
 data class BiometricSessionEntity(
     @PrimaryKey val id: String,
@@ -150,6 +183,9 @@ data class BiometricSessionEntity(
     val notes: String,
 )
 
+/**
+ * Entidade Room `FingerprintEntity` usada para persistir dados estruturados no banco local.
+ */
 @Entity(tableName = "fingerprints")
 data class FingerprintEntity(
     @PrimaryKey val id: String,
@@ -164,6 +200,9 @@ data class FingerprintEntity(
     val capturedAt: String,
 )
 
+/**
+ * Entidade Room `SyncQueueEntity` usada para persistir dados estruturados no banco local.
+ */
 @Entity(tableName = "sync_queue")
 data class SyncQueueEntity(
     @PrimaryKey val id: String,
@@ -175,6 +214,9 @@ data class SyncQueueEntity(
     val errorMessage: String?,
 )
 
+/**
+ * Entidade Room `AuditLogEntity` usada para persistir dados estruturados no banco local.
+ */
 @Entity(tableName = "audit_logs")
 data class AuditLogEntity(
     @PrimaryKey val id: String,
@@ -185,12 +227,18 @@ data class AuditLogEntity(
     val createdAt: String,
 )
 
+/**
+ * Projecao de consulta `DashboardMetricsProjection` usada pelo Room para leituras otimizadas.
+ */
 data class DashboardMetricsProjection(
     val babiesToday: Int,
     val collectionsToday: Int,
     val pendingSync: Int,
 )
 
+/**
+ * Projecao de consulta `BabyListItemProjection` usada pelo Room para leituras otimizadas.
+ */
 data class BabyListItemProjection(
     val id: String,
     val name: String,
@@ -200,6 +248,9 @@ data class BabyListItemProjection(
     val status: SyncStatus,
 )
 
+/**
+ * Projecao de consulta `PendingSyncProjection` usada pelo Room para leituras otimizadas.
+ */
 data class PendingSyncProjection(
     val sessionId: String,
     val babyName: String,
@@ -207,6 +258,9 @@ data class PendingSyncProjection(
     val syncStatus: SyncStatus,
 )
 
+/**
+ * Projecao de consulta `SessionHistoryProjection` usada pelo Room para leituras otimizadas.
+ */
 data class SessionHistoryProjection(
     val id: String,
     val babyName: String,
@@ -215,6 +269,9 @@ data class SessionHistoryProjection(
     val syncStatus: SyncStatus,
 )
 
+/**
+ * Projecao de consulta `SessionHistoryDetailProjection` usada pelo Room para leituras otimizadas.
+ */
 data class SessionHistoryDetailProjection(
     val id: String,
     val babyId: String,
@@ -229,6 +286,9 @@ data class SessionHistoryDetailProjection(
     val notes: String,
 )
 
+/**
+ * Projecao de consulta `FingerprintHistoryProjection` usada pelo Room para leituras otimizadas.
+ */
 data class FingerprintHistoryProjection(
     val id: String,
     val fingerCode: String,
@@ -240,6 +300,9 @@ data class FingerprintHistoryProjection(
     val capturedAt: String,
 )
 
+/**
+ * Projecao de consulta `SessionContextProjection` usada pelo Room para leituras otimizadas.
+ */
 data class SessionContextProjection(
     val babyName: String,
     val birthDate: String,
@@ -247,6 +310,9 @@ data class SessionContextProjection(
     val hospitalName: String,
 )
 
+/**
+ * Projecao de consulta `LatestBabySessionProjection` usada pelo Room para leituras otimizadas.
+ */
 data class LatestBabySessionProjection(
     val id: String,
     val sessionDate: String,
@@ -254,6 +320,9 @@ data class LatestBabySessionProjection(
     val syncStatus: SyncStatus,
 )
 
+/**
+ * DAO Room `HospitalDao` responsavel pelas operacoes de leitura e escrita da tabela relacionada.
+ */
 @Dao
 interface HospitalDao {
     @Query("SELECT * FROM hospitals ORDER BY name")
@@ -266,6 +335,9 @@ interface HospitalDao {
     suspend fun count(): Int
 }
 
+/**
+ * DAO Room `UserDao` responsavel pelas operacoes de leitura e escrita da tabela relacionada.
+ */
 @Dao
 interface UserDao {
     @Query(
@@ -286,6 +358,9 @@ interface UserDao {
     suspend fun count(): Int
 }
 
+/**
+ * DAO Room `BabyDao` responsavel pelas operacoes de leitura e escrita da tabela relacionada.
+ */
 @Dao
 interface BabyDao {
     @Query(
@@ -328,6 +403,9 @@ interface BabyDao {
     suspend fun count(): Int
 }
 
+/**
+ * DAO Room `GuardianDao` responsavel pelas operacoes de leitura e escrita da tabela relacionada.
+ */
 @Dao
 interface GuardianDao {
     @Query("SELECT * FROM guardians WHERE babyId = :babyId AND deletedAt IS NULL ORDER BY relation ASC, name ASC")
@@ -349,6 +427,9 @@ interface GuardianDao {
     suspend fun softDeleteByBabyId(babyId: String, updatedAt: String, deletedAt: String)
 }
 
+/**
+ * DAO Room `SessionDao` responsavel pelas operacoes de leitura e escrita da tabela relacionada.
+ */
 @Dao
 interface SessionDao {
     @Query("SELECT COUNT(*) FROM biometric_sessions WHERE substr(sessionDate, 1, 10) = date('now')")
@@ -431,6 +512,9 @@ interface SessionDao {
     suspend fun count(): Int
 }
 
+/**
+ * DAO Room `FingerprintDao` responsavel pelas operacoes de leitura e escrita da tabela relacionada.
+ */
 @Dao
 interface FingerprintDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -459,6 +543,9 @@ interface FingerprintDao {
     suspend fun getBySessionIds(sessionIds: List<String>): List<FingerprintEntity>
 }
 
+/**
+ * DAO Room `SyncQueueDao` responsavel pelas operacoes de leitura e escrita da tabela relacionada.
+ */
 @Dao
 interface SyncQueueDao {
     @Query("SELECT COUNT(*) FROM sync_queue WHERE status IN ('PENDING', 'ERROR')")
@@ -479,6 +566,9 @@ interface SyncQueueDao {
     )
 }
 
+/**
+ * DAO Room `AuditLogDao` responsavel pelas operacoes de leitura e escrita da tabela relacionada.
+ */
 @Dao
 interface AuditLogDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)

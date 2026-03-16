@@ -11,6 +11,9 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
 
+/**
+ * Worker do WorkManager que executa sincronizacoes imediatas em background.
+ */
 class SyncWorker(
     appContext: Context,
     workerParams: WorkerParameters,
@@ -59,6 +62,9 @@ class SyncWorker(
     }
 }
 
+/**
+ * Interface `SyncWorkerEntryPoint` que define um contrato reutilizado por outras camadas.
+ */
 @EntryPoint
 @InstallIn(SingletonComponent::class)
 interface SyncWorkerEntryPoint {

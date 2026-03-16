@@ -45,6 +45,9 @@ import com.example.biometrianeonatal.core.designsystem.SectionTitle
 import com.example.biometrianeonatal.core.designsystem.StatusBadge
 import com.example.biometrianeonatal.domain.model.SessionCaptureRecord
 
+/**
+ * Tela de detalhe da sessao com metadados, progresso e abertura segura das capturas.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistoryDetailScreen(
